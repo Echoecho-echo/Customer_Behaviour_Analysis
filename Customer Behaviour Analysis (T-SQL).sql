@@ -85,3 +85,16 @@ SELECT age_group, sum(purchase_amount) AS total_revenue
 FROM customers
 GROUP BY age_group
 ORDER BY total_revenue DESC
+
+
+-- Creating column to add the segmentation data
+ALTER TABLE customers
+ADD customer_segment NVARCHAR(255);
+
+
+UPDATE customers
+SET customer_segment = CASE
+	WHEN previous_purchases = 1 then 'New'
+	WHEN previous_purchases between 2 AND 10 then 'Returning'
+	else 'Loyal'
+	END
